@@ -2,11 +2,24 @@
 
 module ExchangeIt
   class User
-    attr_accessor :name, :surname
+
+    extend Forwardable 
+
+    def_delegators :account, :balance
+
+
+    attr_reader :name, :surname, :account
 
     def initialize(name, surname)
       @name = name.is_a?(String) ? name : name.to_s
       @surname = surname
+      create_account
     end
+     private
+
+     def create_account
+         @account = Account.new self
+    end
+
   end
 end
